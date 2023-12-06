@@ -12,15 +12,18 @@ fn main() -> Result<()> {
     // Main loop
     loop {
         // The draw method on terminal is the main interaction point an app has with Ratatui.
-        terminal.draw(|frame| { //The draw method accepts a closure (an anonymous method) with a single Frame parameter, and renders the entire screen.
+        // The draw method accepts a closure (an anonymous method) with a single Frame parameter, and renders the entire screen.
+        terminal.draw(|frame| { 
             let area = frame.size();
             frame.render_widget(Paragraph::new("Hello Ratatui! (press 'q' to quit)").white().on_blue(),area,);
         })?;
 
+        // Polls every 16 ms, roughly 60 fps
         if event::poll(std::time::Duration::from_millis(16))? {
             if let event::Event::Key(key) = event::read()? {
+                // If q is pressed or Q in caps locks
                 if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') || key.kind == KeyEventKind::Press && key.code == KeyCode::Char('Q') {
-                    break;
+                    break; // If q is pressed, break from main loop, end program.
                 }
             }
         }
